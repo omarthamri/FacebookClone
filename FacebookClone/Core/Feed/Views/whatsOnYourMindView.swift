@@ -8,16 +8,25 @@
 import SwiftUI
 
 struct whatsOnYourMindView: View {
-    @State private var show
+    @State private var showCreatePostView: Bool = false
+    @StateObject private var viewModel: FeedViewModel
+    init(viewModel: FeedViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     var body: some View {
         VStack {
             HStack {
-                Image("profilePic")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+                NavigationLink {
+                    ProfileView(viewModel: viewModel)
+                        .navigationBarBackButtonHidden()
+                } label: {
+                    Image(viewModel.users[0].profileImageName ?? "")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                }
                 Button {
-                    
+                    showCreatePostView.toggle()
                 } label: {
                     HStack {
                         Text("What's on your mind?")
@@ -43,12 +52,12 @@ struct whatsOnYourMindView: View {
             .padding()
 
         }
-        .fullScreenCover(isPresented: /*@START_MENU_TOKEN@*/.constant(true)/*@END_MENU_TOKEN@*/) {
-            
+        .fullScreenCover(isPresented: $showCreatePostView) {
+            CreatePostView()
         }
     }
 }
 
 #Preview {
-    whatsOnYourMindView()
+    whatsOnYourMindView(viewModel: FeedViewModel())
 }

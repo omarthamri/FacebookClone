@@ -11,7 +11,7 @@ struct MainTabbarView: View {
     @State private var selectedTab: Int = 0
     var body: some View {
         TabView {
-            ContentView()
+            FeedView()
                 .tabItem {
                                     VStack {
                                         Image(systemName: "house")
@@ -21,7 +21,7 @@ struct MainTabbarView: View {
                                 .onAppear{
                                     selectedTab = 0
                                 }
-            Text("2")
+            VideosView()
                 .tabItem {
                                     VStack {
                                         Image(systemName: "play.tv")
@@ -32,7 +32,7 @@ struct MainTabbarView: View {
                                     selectedTab = 1
                                 }
             
-            Text("3")
+            FriendsView()
                 .tabItem {
                                     VStack {
                                         Image(systemName: "person.2")
@@ -42,7 +42,7 @@ struct MainTabbarView: View {
                                 .onAppear{
                                     selectedTab = 2
                                 }
-            Text("4")
+            MarketplaceView()
                 .tabItem {
                                     VStack {
                                         Image("marketplace")
@@ -52,7 +52,7 @@ struct MainTabbarView: View {
                                 .onAppear{
                                     selectedTab = 3
                                 }
-            Text("6")
+            MenuView()
                 .tabItem {
                                     VStack {
                                         Image(systemName: "text.justify")

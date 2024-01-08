@@ -8,11 +8,30 @@
 import SwiftUI
 
 struct CustomButton: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    private var title: String
+    private var imageName: String
+    private var backgroundColor: Color
+    private var foregroundColor: Color
+    init(title: String, imageName: String,backgroundColor: Color,foregroundColor: Color) {
+        self.title = title
+        self.imageName = imageName
+        self.backgroundColor = backgroundColor
+        self.foregroundColor = foregroundColor
     }
-}
-
-#Preview {
-    CustomButton()
+    var body: some View {
+        HStack {
+            Image(systemName: imageName)
+            if title != "" {
+                Text(title)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+            }
+            
+        }
+        .foregroundStyle(foregroundColor)
+        .padding(.horizontal)
+        .frame(height: 34)
+        .background(backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
 }
