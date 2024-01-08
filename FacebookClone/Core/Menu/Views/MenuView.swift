@@ -12,7 +12,6 @@ struct MenuView: View {
         NavigationView {
             GeometryReader { proxy in
                 ScrollView {
-                    
                         VStack(alignment: .leading) {
                             HeaderMenuView()
                             ShortCutListView(width: proxy.size.width)
@@ -52,6 +51,7 @@ struct MenuView: View {
 struct MenuListView: View {
     private var width: CGFloat
     @State private var showLogoutAlert: Bool = false
+    @StateObject private var viewModel = MenuViewModel()
     init(width: CGFloat) {
         self.width = width
     }
@@ -73,7 +73,9 @@ struct MenuListView: View {
             })
         }
         .alert("Log out of your account?", isPresented: $showLogoutAlert, actions: {
-                            Button("Logout") { }
+                            Button("Logout") { 
+                                viewModel.logout()
+                            }
                             Button("Cancel", role: .cancel) {}
                         })
     }

@@ -6,38 +6,73 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ProfileHeaderView: View {
     private var width: CGFloat
-    private var viewModel: FeedViewModel
+    @StateObject private var viewModel: FeedViewModel
+    @State private var showPhotoPicker: Bool = false
+    @State private var showCoverPhotoPicker: Bool = false
     init(width: CGFloat,viewModel: FeedViewModel) {
         self.width = width
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     var body: some View {
         VStack {
-            Image(viewModel.users[0].coverImageName ?? "")
-                .resizable()
-                .scaledToFill()
-                .frame(width: width, height: 250)
+            Button(action: {
+                showCoverPhotoPicker.toggle()
+            }, label: {
+                if viewModel.coverImage == Image("no_profile") {
+                    KFImage(URL(string: viewModel.currentUser?.coverImageName ?? ""))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: width, height: 250)
+                } else {
+                    viewModel.coverImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: width, height: 250)
+                }
+            })
+            
             Color
                 .white
                 .frame(height: 180)
         }
+        .photosPicker(isPresented: $showCoverPhotoPicker, selection: $viewModel.selectedCoverImage)
         .overlay {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Image(viewModel.users[0].profileImageName ?? "")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 120, height: 120)
-                            .clipShape(Circle())
-                            .overlay {
-                                Circle()
-                                    .stroke(Color(.systemGray6),lineWidth: 3)
+                        Button(action: {
+                            showPhotoPicker.toggle()
+                        }, label: {
+                            if viewModel.profileImage == Image("no_profile") {
+                                KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                                    .overlay {
+                                        Circle()
+                                            .stroke(Color(.systemGray6),lineWidth: 3)
+                                    }
+                                    .padding(.top,170)
+                            } else {
+                                viewModel.profileImage
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                                    .overlay {
+                                        Circle()
+                                            .stroke(Color(.systemGray6),lineWidth: 3)
+                                    }
+                                    .padding(.top,170)
                             }
-                            .padding(.top,170)
+                            
+                        })
+                        
                         Text("\(viewModel.users[0].firstName) \(viewModel.users[0].familyName)")
                             .font(.title)
                             .fontWeight(.bold)
@@ -61,5 +96,6 @@ struct ProfileHeaderView: View {
                     .padding(.vertical)
             }
         }
+        .photosPicker(isPresented: $showPhotoPicker, selection: $viewModel.selectedImage)
     }
 }

@@ -6,8 +6,60 @@
 //
 
 import Foundation
+import PhotosUI
+import SwiftUI
+import Firebase
+import Combine
+import Kingfisher
 
 class FeedViewModel: ObservableObject {
+    @Published var selectedImage: PhotosPickerItem? {
+            didSet { Task {try await loadImage(fromItem: selectedImage)} }
+        }
+    @Published var selectedCoverImage: PhotosPickerItem? {
+            didSet { Task {try await loadCoverImage(fromItem: selectedCoverImage)} }
+        }
+    @Published var profileImage: Image = Image("no_profile")
+    @Published var coverImage: Image = Image("no_profile")
+    private var uiImage: UIImage?
+    @Published var currentUser: User?
+    private var cancellables = Set<AnyCancellable>()
+        
+    init() {
+        UserService.shared.$currentUser.sink { [weak self] user in
+            self?.currentUser = user
+        }
+        .store(in: &cancellables)
+    }
+    
+    func loadImage(fromItem item: PhotosPickerItem?) async throws{
+            guard let item = item else { return }
+            guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+            guard let uiImage = UIImage(data: data) else { return }
+            self.uiImage = uiImage
+            self.profileImage = Image(uiImage: uiImage)
+            try await updateProfileImage()
+    }
+    func loadCoverImage(fromItem item: PhotosPickerItem?) async throws{
+        guard let item = item else { return }
+        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+        guard let uiImage = UIImage(data: data) else { return }
+        self.uiImage = uiImage
+        self.coverImage = Image(uiImage: uiImage)
+        try await updateCoverImage()
+    }
+    private func updateProfileImage() async throws {
+            guard let image = self.uiImage else { return }
+            guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
+            try await UserService.shared.updateUserProfileImage(withImageUrl: imageUrl)
+            
+    }
+    private func updateCoverImage() async throws {
+            guard let image = self.uiImage else { return }
+            guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
+            try await UserService.shared.updateUserCoverImage(withImageUrl: imageUrl)
+            
+    }
     @Published var users: [User] = [
         User(id: "0", firstName: "Omar", familyName: "Thamri", email: "omar.thamri@gmail.com", profileImageName: "profilePic", coverImageName: "cover_picture", age: 28, gender: "male", friendsIds: ["1","2","3","4"], friendsRequestsIds: ["5","6","7"]),
        User(id: "1", firstName: "Jim", familyName: "Halpert", email: "jim.halpert@gmail.com", profileImageName: "profilePic1", coverImageName: "Story1", age: 42, gender: "male", friendsIds: [], friendsRequestsIds: []),

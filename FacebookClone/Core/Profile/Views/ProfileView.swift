@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
-    private var viewModel: FeedViewModel
+    @StateObject private var viewModel: FeedViewModel
     private var postIndex: Int
     init(viewModel: FeedViewModel) {
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
         self.postIndex = viewModel.posts.firstIndex(where: {$0.userId == viewModel.users[0].id}) ?? 0
     }
     var body: some View {
@@ -34,10 +35,10 @@ struct ProfileView: View {
                                 .foregroundStyle(.blue)
                         }
                         HStack(spacing: 16) {
-                            Image("profilePic")
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .clipShape(Circle())
+                                 Image("profilePic")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
                             Text("What's on your mind?")
                                 .foregroundStyle(.black)
                             Spacer()
