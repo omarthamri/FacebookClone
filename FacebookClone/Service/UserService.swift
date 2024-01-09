@@ -5,7 +5,7 @@
 //  Created by omar thamri on 8/1/2024.
 //
 
-import Foundation
+import SwiftUI
 import Firebase
 import FirebaseFirestoreSwift
 
@@ -13,6 +13,8 @@ import FirebaseFirestoreSwift
 class UserService {
     
     @Published var currentUser: User?
+    @Published var users: [User]?
+    @Published var friends: [User]?
     static let shared = UserService()
     
     init() {
@@ -24,13 +26,24 @@ class UserService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let snapshot = try await Firestore.firestore().collection("users").document(uid).getDocument()
         self.currentUser = try snapshot.data(as: User.self)
+        try await fetchFriends()
     }
     
-    static func fetchUsers() async throws -> [User] {
+    @MainActor
+    func fetchUsers() async throws -> [User] {
         guard let currentUid = Auth.auth().currentUser?.uid else { return [] }
         let snapshot = try await Firestore.firestore().collection("users").getDocuments()
         let users = snapshot.documents.compactMap({try? $0.data(as: User.self)})
         return users.filter({ $0.id  != currentUid })
+    }
+    
+    @MainActor
+    func fetchFriends() async throws {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        let snapshot = try await Firestore.firestore().collection("users").getDocuments()
+        let users = snapshot.documents.compactMap({try? $0.data(as: User.self)})
+        guard let friendsIds = self.currentUser?.friendsIds else { return }
+        self.friends = users.filter({ friendsIds.contains($0.id) })
     }
     
     func reset() {

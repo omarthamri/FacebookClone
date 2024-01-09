@@ -22,16 +22,22 @@ struct ProfileHeaderView: View {
             Button(action: {
                 showCoverPhotoPicker.toggle()
             }, label: {
-                if viewModel.coverImage == Image("no_profile") {
-                    KFImage(URL(string: viewModel.currentUser?.coverImageName ?? ""))
+                ZStack {
+                    Image("no_profile")
                         .resizable()
                         .scaledToFill()
                         .frame(width: width, height: 250)
-                } else {
-                    viewModel.coverImage
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: width, height: 250)
+                    if viewModel.coverImage == Image("no_profile") {
+                        KFImage(URL(string: viewModel.currentUser?.coverImageName ?? ""))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width, height: 250)
+                    } else {
+                        viewModel.coverImage
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width, height: 250)
+                    }
                 }
             })
             
@@ -47,8 +53,8 @@ struct ProfileHeaderView: View {
                         Button(action: {
                             showPhotoPicker.toggle()
                         }, label: {
-                            if viewModel.profileImage == Image("no_profile") {
-                                KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                            ZStack {
+                                Image("no_profile")
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 120, height: 120)
@@ -58,22 +64,35 @@ struct ProfileHeaderView: View {
                                             .stroke(Color(.systemGray6),lineWidth: 3)
                                     }
                                     .padding(.top,170)
-                            } else {
-                                viewModel.profileImage
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 120, height: 120)
-                                    .clipShape(Circle())
-                                    .overlay {
-                                        Circle()
-                                            .stroke(Color(.systemGray6),lineWidth: 3)
-                                    }
-                                    .padding(.top,170)
+                                if viewModel.profileImage == Image("no_profile") {
+                                    KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 120, height: 120)
+                                        .clipShape(Circle())
+                                        .overlay {
+                                            Circle()
+                                                .stroke(Color(.systemGray6),lineWidth: 3)
+                                        }
+                                        .padding(.top,170)
+                                } else {
+                                    viewModel.profileImage
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 120, height: 120)
+                                        .clipShape(Circle())
+                                        .overlay {
+                                            Circle()
+                                                .stroke(Color(.systemGray6),lineWidth: 3)
+                                        }
+                                        .padding(.top,170)
+                                }
                             }
+                           
                             
                         })
                         
-                        Text("\(viewModel.users[0].firstName) \(viewModel.users[0].familyName)")
+                        Text("\(viewModel.currentUser?.firstName ?? "") \(viewModel.currentUser?.familyName ?? "")")
                             .font(.title)
                             .fontWeight(.bold)
                         Text("\(viewModel.users[0].friendsIds.count) ")

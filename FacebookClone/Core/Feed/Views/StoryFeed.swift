@@ -16,11 +16,7 @@ struct StoryFeed: View {
         ScrollView(.horizontal) {
             HStack {
                 MyStoryCard(viewModel: viewModel)
-                ForEach(viewModel.users[0].friendsIds, id: \.self) { id in
-                    if let friend = viewModel.users.first(where: {$0.id == id}) {
-                        StoryCard(imageName: friend.coverImageName ?? "", profilePic: friend.profileImageName ?? "", title: friend.firstName + friend.familyName)
-                    }
-                }
+                StoryCard(viewModel: viewModel)
             }
             .padding(.leading)
             .padding(.vertical,5)

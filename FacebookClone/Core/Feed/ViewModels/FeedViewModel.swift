@@ -22,12 +22,17 @@ class FeedViewModel: ObservableObject {
     @Published var profileImage: Image = Image("no_profile")
     @Published var coverImage: Image = Image("no_profile")
     private var uiImage: UIImage?
+    @Published var friends: [User]?
     @Published var currentUser: User?
     private var cancellables = Set<AnyCancellable>()
         
     init() {
         UserService.shared.$currentUser.sink { [weak self] user in
             self?.currentUser = user
+        }
+        .store(in: &cancellables)
+        UserService.shared.$friends.sink { [weak self] friends in
+            self?.friends = friends
         }
         .store(in: &cancellables)
     }

@@ -21,7 +21,7 @@ struct LoginView: View {
                         .frame(width: 70, height: 70)
                     VStack(spacing: 24) {
                         TextField("Mobile number or email address",text: $viewModel.email)
-                            .textInputAutocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                             .padding(12)
                             .background(.white)
                             .frame(width: proxy.size.width - 30, height: 50)

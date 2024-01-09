@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct whatsOnYourMindView: View {
     @State private var showCreatePostView: Bool = false
@@ -20,10 +21,26 @@ struct whatsOnYourMindView: View {
                     ProfileView(viewModel: viewModel)
                         .navigationBarBackButtonHidden()
                 } label: {
-                    Image(viewModel.users[0].profileImageName ?? "")
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
+                    ZStack {
+                        Image("no_profile")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .scaledToFill()
+                            .clipShape(Circle())
+                        if viewModel.profileImage == Image("no_profile") {
+                            KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFill()
+                                .clipShape(Circle())
+                        } else {
+                            viewModel.profileImage
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFill()
+                                .clipShape(Circle())
+                        }
+                    }
                 }
                 Button {
                     showCreatePostView.toggle()

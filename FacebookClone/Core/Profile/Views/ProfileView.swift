@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
 struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
@@ -35,10 +36,18 @@ struct ProfileView: View {
                                 .foregroundStyle(.blue)
                         }
                         HStack(spacing: 16) {
-                                 Image("profilePic")
+                            if viewModel.profileImage == Image("no_profile") {
+                                KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            } else {
+                                viewModel.profileImage
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                     .clipShape(Circle())
+                            }
                             Text("What's on your mind?")
                                 .foregroundStyle(.black)
                             Spacer()
@@ -109,7 +118,7 @@ struct ProfileView: View {
                     PostView(viewModel: viewModel, index: postIndex)
                     Spacer()
                 }
-                .navigationTitle("\(viewModel.users[0].firstName) \(viewModel.users[0].familyName)")
+                .navigationTitle("\(viewModel.currentUser?.firstName ?? "") \(viewModel.currentUser?.familyName ?? "")")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar{
                     ToolbarItem(placement: .topBarLeading) {

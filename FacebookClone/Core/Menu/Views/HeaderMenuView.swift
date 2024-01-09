@@ -6,16 +6,25 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct HeaderMenuView: View {
+    @StateObject private var viewModel = MenuViewModel()
     var body: some View {
         VStack {
             HStack(spacing: 15) {
-                Image("profilePic")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                Text("Omar Thamri")
+                ZStack {
+                    Image("no_profile")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                    KFImage(URL(string: viewModel.currentUser?.profileImageName ?? ""))
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                }
+                
+                Text("\(viewModel.currentUser?.firstName ?? "") \(viewModel.currentUser?.familyName ?? "")")
                 Spacer()
                 Image(systemName: "chevron.down.circle.fill")
                     .resizable()

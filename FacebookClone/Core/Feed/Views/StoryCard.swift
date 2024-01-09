@@ -6,36 +6,56 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct StoryCard: View {
-    let imageName: String
-    let profilePic: String
-    let title: String
+    @StateObject private var viewModel: FeedViewModel
+    init(viewModel: FeedViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     var body: some View {
-        ZStack(alignment: .leading) {
-            Image(imageName)
-                .resizable()
-                .frame(width: 100, height: 170)
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 15))
-            VStack(alignment: .leading,spacing: 100) {
-                Image(profilePic)
-                    .resizable()
-                    .frame(width: 35, height: 35)
-                    .clipShape(Circle())
-                    .overlay{
-                        Circle().stroke(.blue,lineWidth: 4)
+        HStack {
+            ForEach(viewModel.friends ?? [], id: \.self) { friend in
+                ZStack(alignment: .leading) {
+                    ZStack {
+                        Image("no_profile")
+                            .resizable()
+                            .frame(width: 100, height: 170)
+                            .scaledToFit()
+                        if viewModel.profileImage == Image("no_profile") {
+                            KFImage(URL(string:  friend.coverImageName ?? ""))
+                                .resizable()
+                                .frame(width: 100, height: 170)
+                                .scaledToFit()
+                        } else {
+                            viewModel.profileImage
+                                .resizable()
+                                .frame(width: 100, height: 170)
+                                .scaledToFit()
+                        }
                     }
-                Text(title)
-                    .font(.system(size: 12,weight: .semibold))
-                    .foregroundStyle(.white)
+                    
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    VStack(alignment: .leading,spacing: 100) {
+                        KFImage(URL(string: friend.profileImageName ?? ""))
+                            .resizable()
+                            .frame(width: 35, height: 35)
+                            .clipShape(Circle())
+                            .overlay{
+                                Circle().stroke(.blue,lineWidth: 4)
+                            }
+                        Text("\(friend.firstName) \(friend.familyName)")
+                            .font(.system(size: 12,weight: .semibold))
+                            .foregroundStyle(.white)
+                    }
+                    .padding(.leading,8)
+                }
             }
-            .padding(.leading,8)
         }
         
     }
 }
 
 #Preview {
-    StoryCard(imageName: "Story1", profilePic: "profilePic1", title: "Jim Halpert")
+    StoryCard(viewModel: FeedViewModel())
 }
