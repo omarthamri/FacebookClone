@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct PostView: View {
     let facebookBlue = Color(red: 66/255, green: 103/255, blue: 178/255,opacity: 1)
@@ -20,12 +21,20 @@ struct PostView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image(user.profileImageName ?? "")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+                ZStack {
+                    Image("no-profile")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                    KFImage(URL(string: viewModel.posts[index].user?.profileImageName ?? ""))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                }
                 VStack(alignment: .leading,spacing: 0) {
-                    Text("\(user.firstName) \(user.familyName)")
+                    Text("\(viewModel.posts[index].user?.firstName ?? "") \(viewModel.posts[index].user?.familyName ?? "")")
                             .font(.system(size: 14, weight: .semibold))
                     HStack(spacing: 5) {
                         Text("1 d")
@@ -47,7 +56,7 @@ struct PostView: View {
             .padding(.horizontal)
             Text(viewModel.posts[index].postTitle)
             .padding(.horizontal)
-            Image(viewModel.posts[index].postUrl)
+            KFImage(URL(string: viewModel.posts[index].postUrl))
                 .resizable()
                 .scaledToFill()
             HStack {

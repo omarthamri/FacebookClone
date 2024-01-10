@@ -28,7 +28,10 @@ class FeedViewModel: ObservableObject {
     private var uiImage: UIImage?
     @Published var friends: [User]?
     @Published var currentUser: User?
+    @Published var mindText: String = ""
+    @Published var posts = [Post]()
     private var cancellables = Set<AnyCancellable>()
+    
         
     init() {
         UserService.shared.$currentUser.sink { [weak self] user in
@@ -39,7 +42,18 @@ class FeedViewModel: ObservableObject {
             self?.friends = friends
         }
         .store(in: &cancellables)
+        Task { try await fetchPosts() }
     }
+    
+    func uploadPost() async throws {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            guard let uiImage = uiImage else { return }
+            let postRef = Firestore.firestore().collection("posts").document()
+            guard let imageUrl = try await ImageUploader.uploadPostImage(image: uiImage) else { return }
+            let post = Post(id: postRef.documentID, userId: uid, postTitle: mindText, postUrl: imageUrl, postLikes: 5, postComments: 3, postShares: 2, isVideo: false, timestamp: Timestamp())
+            guard let encodedPost = try? Firestore.Encoder().encode(post) else { return }
+            try await postRef.setData(encodedPost )
+        }
     
     func loadImage(fromItem item: PhotosPickerItem?) async throws{
             guard let item = item else { return }
@@ -77,12 +91,10 @@ class FeedViewModel: ObservableObject {
             try await UserService.shared.updateUserCoverImage(withImageUrl: imageUrl)
             
     }
-    private func updateCreatePostImage() async throws {
-            guard let image = self.uiImage else { return }
-            guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
-          //  try await UserService.shared.updateUserProfileImage(withImageUrl: imageUrl)
-            
-    }
+    @MainActor
+        func fetchPosts() async throws {
+            self.posts = try await PostService.fetchFeedPosts()
+        }
     @Published var users: [User] = [
         User(id: "0", firstName: "Omar", familyName: "Thamri", email: "omar.thamri@gmail.com", profileImageName: "profilePic", coverImageName: "cover_picture", age: 28, gender: "male", friendsIds: ["1","2","3","4"], friendsRequestsIds: ["5","6","7"]),
        User(id: "1", firstName: "Jim", familyName: "Halpert", email: "jim.halpert@gmail.com", profileImageName: "profilePic1", coverImageName: "Story1", age: 42, gender: "male", friendsIds: [], friendsRequestsIds: []),
@@ -94,9 +106,4 @@ class FeedViewModel: ObservableObject {
         User(id: "7", firstName: "Natasha", familyName: "Romanov", email: "natasha.romanov@gmail.com", profileImageName: "romanoff", coverImageName: "Story4", age: 38, gender: "female", friendsIds: [], friendsRequestsIds: [])
     ]
     
-    @Published var posts: [Post] = [
-      Post(id: "0", userId: "1", postTitle: "Time to celebrate with the best team ever 😎", postUrl: "office", postLikes: 4, postComments: 3, postShares: 2, isVideo: false),
-      Post(id: "1", userId: "2", postTitle: "Family always come first 🙂", postUrl: "family", postLikes: 2, postComments: 5, postShares: 2, isVideo: false),
-      Post(id: "2", userId: "0", postTitle: "You'll never walk alone", postUrl: "stadium", postLikes: 6, postComments: 4, postShares: 2, isVideo: false)
-    ]
 }

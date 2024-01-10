@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestoreSwift
 
 struct Post: Identifiable,Hashable,Codable {
     
@@ -17,4 +19,6 @@ struct Post: Identifiable,Hashable,Codable {
     var postComments: Int
     var postShares: Int
     var isVideo: Bool
+    let timestamp: Timestamp
+    var user: User?
 }

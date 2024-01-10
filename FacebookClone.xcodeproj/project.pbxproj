@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		481733EA2B4EE3DB002B4180 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481733E92B4EE3DB002B4180 /* PostService.swift */; };
 		4831117A2B4ADFF500DD2983 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483111792B4ADFF500DD2983 /* FeedViewModel.swift */; };
 		483BC8A12B3F21B000EA1241 /* MainTabbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483BC8A02B3F21B000EA1241 /* MainTabbarView.swift */; };
 		483E14342B461B9800810B1E /* PostGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483E14332B461B9800810B1E /* PostGridView.swift */; };
@@ -94,6 +95,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		481733E92B4EE3DB002B4180 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		483111792B4ADFF500DD2983 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		483BC8A02B3F21B000EA1241 /* MainTabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarView.swift; sourceTree = "<group>"; };
 		483E14332B461B9800810B1E /* PostGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostGridView.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				48E2B51A2B4C453B002FEA16 /* AuthService.swift */,
 				48E2B51C2B4C4D4B002FEA16 /* UserService.swift */,
 				48E37F9A2B4C9E1F0001876C /* ImageUploader.swift */,
+				481733E92B4EE3DB002B4180 /* PostService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				4873D4612B4B3B9800EEEE3E /* FriendsViewModel.swift in Sources */,
 				48E2B5252B4C6B28002FEA16 /* LoginViewModel.swift in Sources */,
 				48A2F94B2B498D290021AB68 /* ProfileView.swift in Sources */,
+				481733EA2B4EE3DB002B4180 /* PostService.swift in Sources */,
 				48E2B5222B4C635F002FEA16 /* RootView.swift in Sources */,
 				4884CA232B488B8A00494AE2 /* CustomVideoPlayer.swift in Sources */,
 				48D802AE2B3B178D00C14ADE /* FacebookCloneApp.swift in Sources */,

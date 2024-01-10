@@ -18,7 +18,7 @@ struct FeedView: View {
                     VStack {
                         ScrollView {
                             HeaderView()
-                            whatsOnYourMindView(viewModel: viewModel)
+                            whatsOnYourMindView(viewModel: viewModel, width: proxy.size.width)
                             DividerView(widthRectangle: proxy.size.width)
                             StoryFeed(viewModel: viewModel)
                             DividerView(widthRectangle: proxy.size.width)
