@@ -12,10 +12,11 @@ import Kingfisher
 struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: FeedViewModel
-    private var postIndex: Int
+    private var myPosts: [Post]
     init(viewModel: FeedViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
-        self.postIndex = viewModel.posts.firstIndex(where: {$0.userId == viewModel.users[0].id}) ?? 0
+       // self.postIndex = viewModel.posts.firstIndex(where: {$0.userId == viewModel.currentUser?.id}) ?? 0
+        self.myPosts = viewModel.posts.filter{ $0.userId == viewModel.currentUser?.id }
     }
     var body: some View {
         GeometryReader { proxy in
@@ -115,7 +116,11 @@ struct ProfileView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .padding(.vertical)
                     DividerView(widthRectangle: proxy.size.width)
-                    PostView(viewModel: viewModel, index: postIndex)
+                    ForEach(myPosts) { post in
+                        if let postIndex = viewModel.posts.firstIndex(where: {$0 == post}) {
+                            PostView(viewModel: viewModel, index: postIndex)
+                        }
+                    }
                     Spacer()
                 }
                 .navigationTitle("\(viewModel.currentUser?.firstName ?? "") \(viewModel.currentUser?.familyName ?? "")")
