@@ -24,7 +24,7 @@ struct AddEmailView: View {
                 Text("Enter the email address at which you can be contacted. No one will see this on your profile.")
                                 .font(.footnote)
                 TextField("Email address",text: $viewModel.email)
-                        .textInputAutocapitalization(.none)
+                        .textInputAutocapitalization(.never)
                         .padding(12)
                         .background(.white)
                         .frame(width: proxy.size.width - 30, height: 50)

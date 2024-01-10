@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FriendsView: View {
-    private var viewModel = FriendsViewModel()
+    @StateObject private var viewModel = FriendsViewModel()
     var body: some View {
         NavigationView {
             VStack {
@@ -23,7 +23,7 @@ struct FriendsView: View {
                             Text("Friend requests")
                                 .font(.headline)
                                 .fontWeight(.bold)
-                            Text("\(viewModel.users[0].friendsRequestsIds.count)")
+                            Text("\(viewModel.friendsRequests?.count ?? 0)")
                                 .font(.headline)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.red)
@@ -35,10 +35,9 @@ struct FriendsView: View {
                         }
                         ScrollView {
                             VStack(alignment: .leading,spacing: 24) {
-                                ForEach(viewModel.users[0].friendsRequestsIds,id: \.self) { id in
-                                    if let user = viewModel.users.first(where: {$0.id == id}) {
-                                        FriendsCell(title: "\(user.firstName) \(user.familyName)", imageName: user.profileImageName ?? "")
-                                    }
+                                ForEach(viewModel.friendsRequests ?? [], id: \.self) { request in
+                                    FriendsCell(title: "\(request.firstName) \(request.familyName)", imageName: request.profileImageName ?? "")
+                                    
                                 }
                             }
                         }

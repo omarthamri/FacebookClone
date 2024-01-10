@@ -95,7 +95,7 @@ struct ProfileHeaderView: View {
                         Text("\(viewModel.currentUser?.firstName ?? "") \(viewModel.currentUser?.familyName ?? "")")
                             .font(.title)
                             .fontWeight(.bold)
-                        Text("\(viewModel.users[0].friendsIds.count) ")
+                        Text("\(viewModel.currentUser?.friendsIds.count ?? 0) ")
                             .font(.headline) +
                         Text("friends")
                             .font(.headline)

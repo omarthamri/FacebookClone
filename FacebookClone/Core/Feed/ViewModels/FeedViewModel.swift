@@ -19,8 +19,12 @@ class FeedViewModel: ObservableObject {
     @Published var selectedCoverImage: PhotosPickerItem? {
             didSet { Task {try await loadCoverImage(fromItem: selectedCoverImage)} }
         }
+    @Published var createPostSelectedImage: PhotosPickerItem? {
+            didSet { Task {try await loadCreatePostImage(fromItem: createPostSelectedImage)} }
+        }
     @Published var profileImage: Image = Image("no_profile")
     @Published var coverImage: Image = Image("no_profile")
+    @Published var createPostImage: Image = Image("")
     private var uiImage: UIImage?
     @Published var friends: [User]?
     @Published var currentUser: User?
@@ -53,6 +57,14 @@ class FeedViewModel: ObservableObject {
         self.coverImage = Image(uiImage: uiImage)
         try await updateCoverImage()
     }
+    func loadCreatePostImage(fromItem item: PhotosPickerItem?) async throws{
+            guard let item = item else { return }
+            guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+            guard let uiImage = UIImage(data: data) else { return }
+            self.uiImage = uiImage
+            self.createPostImage = Image(uiImage: uiImage)
+           // try await updateCreatePostImage()
+    }
     private func updateProfileImage() async throws {
             guard let image = self.uiImage else { return }
             guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
@@ -63,6 +75,12 @@ class FeedViewModel: ObservableObject {
             guard let image = self.uiImage else { return }
             guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
             try await UserService.shared.updateUserCoverImage(withImageUrl: imageUrl)
+            
+    }
+    private func updateCreatePostImage() async throws {
+            guard let image = self.uiImage else { return }
+            guard let imageUrl = try? await ImageUploader.uploadImage(image) else { return }
+          //  try await UserService.shared.updateUserProfileImage(withImageUrl: imageUrl)
             
     }
     @Published var users: [User] = [

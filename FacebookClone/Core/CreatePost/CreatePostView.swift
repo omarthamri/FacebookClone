@@ -10,6 +10,11 @@ import SwiftUI
 struct CreatePostView: View {
     @State private var mindText: String = ""
     @Environment(\.dismiss) private var dismiss
+    @State private var showPhotoPicker: Bool = false
+    @StateObject private var viewModel: FeedViewModel
+    init(viewModel: FeedViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
@@ -31,11 +36,17 @@ struct CreatePostView: View {
                     .padding()
                     TextField("What's on your mind?",text: $mindText,axis: .vertical)
                         .padding(.horizontal)
+                viewModel.createPostImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 400, height: 400)
                     Spacer()
                     Divider()
                     HStack(alignment: .bottom) {
                         Spacer()
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Button(action: {
+                            showPhotoPicker.toggle()
+                        }, label: {
                             Image(systemName: "photo.fill.on.rectangle.fill")
                                 .foregroundStyle(.green)
                         })
@@ -89,10 +100,11 @@ struct CreatePostView: View {
                         .disabled(mindText.count > 0)
                     }
             }
+                .photosPicker(isPresented: $showPhotoPicker, selection: $viewModel.createPostSelectedImage)
         }
         }
 }
 
 #Preview {
-    CreatePostView()
+    CreatePostView(viewModel: FeedViewModel())
 }

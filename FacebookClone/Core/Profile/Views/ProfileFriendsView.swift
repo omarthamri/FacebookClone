@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ProfileFriendsView: View {
     private let gridItems: [GridItem] = [
@@ -14,10 +15,10 @@ struct ProfileFriendsView: View {
         .init(.flexible(),spacing: 1)
     ]
     private var width: CGFloat
-    private var viewModel: FeedViewModel
+    @StateObject private var viewModel: FeedViewModel
     init(width: CGFloat, viewModel: FeedViewModel) {
         self.width = width
-        self.viewModel = viewModel
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     var body: some View {
         VStack {
@@ -26,7 +27,7 @@ struct ProfileFriendsView: View {
                     Text("Friends")
                         .font(.headline)
                         .fontWeight(.semibold)
-                    Text("\(viewModel.users[0].friendsIds.count) friends")
+                    Text("\(viewModel.currentUser?.friendsIds.count ?? 0) friends")
                         .font(.subheadline)
                         .foregroundStyle(Color(.darkGray))
                 }
@@ -37,30 +38,38 @@ struct ProfileFriendsView: View {
             }
             .padding(.horizontal)
             LazyVGrid(columns: gridItems,spacing: 1) {
-                ForEach(viewModel.users[0].friendsIds, id: \.self) { id in
+                ForEach(viewModel.friends ?? [], id: \.self) { friend in
                     VStack(alignment: .center,spacing: 0) {
-                        if let friend = viewModel.users.first(where: { $0.id == id }) {
-                            Image(friend.profileImageName ?? "" )
+                        ZStack {
+                            Image("no-profile")
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: (width / 3) - 20,height: (width / 3) - 20)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                            KFImage(URL(string: friend.profileImageName ?? "" ))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: (width / 3) - 20,height: (width / 3) - 20)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
                             Text("\(friend.firstName) \(friend.familyName)")
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
                                 .padding(.vertical)
-                        }
+                        
                     }
                 }
             }
             .padding(.horizontal)
-            Text("See all friends")
-                .font(.headline)
-                .fontWeight(.semibold)
-                .foregroundStyle(Color(.darkGray))
-                .frame(width: width - 30, height: 44)
-                .background(Color(.systemGray5))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+            if let count = viewModel.friends?.count, count > 0 {
+                Text("See all friends")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color(.darkGray))
+                    .frame(width: width - 30, height: 44)
+                    .background(Color(.systemGray5))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
             DividerView(widthRectangle: width)
                 .padding(.vertical)
         }

@@ -5,11 +5,22 @@
 //  Created by omar thamri on 7/1/2024.
 //
 
-import Foundation
-import Observation
+import SwiftUI
+import Combine
 
-@Observable
-class FriendsViewModel {
+
+class FriendsViewModel: ObservableObject {
+    
+    @Published var friendsRequests: [User]?
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        UserService.shared.$friendsRequests.sink { [weak self] friendsRequests in
+            self?.friendsRequests = friendsRequests
+        }
+        .store(in: &cancellables)
+    }
+    
     var users: [User] = [
         User(id: "0", firstName: "Omar", familyName: "Thamri", email: "omar.thamri@gmail.com", profileImageName: "profilePic", coverImageName: "cover_picture", age: 28, gender: "male", friendsIds: ["1","2","3","4"], friendsRequestsIds: ["5","6","7"]),
        User(id: "1", firstName: "Jim", familyName: "Halpert", email: "jim.halpert@gmail.com", profileImageName: "profilePic1", coverImageName: "Story1", age: 42, gender: "male", friendsIds: [], friendsRequestsIds: []),

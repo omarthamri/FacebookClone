@@ -70,7 +70,7 @@ struct whatsOnYourMindView: View {
 
         }
         .fullScreenCover(isPresented: $showCreatePostView) {
-            CreatePostView()
+            CreatePostView(viewModel: viewModel)
         }
     }
 }
