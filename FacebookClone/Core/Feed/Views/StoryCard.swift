@@ -22,17 +22,11 @@ struct StoryCard: View {
                             .resizable()
                             .frame(width: 100, height: 170)
                             .scaledToFit()
-                        if viewModel.profileImage == Image("no_profile") {
-                            KFImage(URL(string:  friend.coverImageName ?? ""))
+                        KFImage(URL(string:  friend.coverImageName ?? ""))
                                 .resizable()
                                 .frame(width: 100, height: 170)
                                 .scaledToFit()
-                        } else {
-                            viewModel.profileImage
-                                .resizable()
-                                .frame(width: 100, height: 170)
-                                .scaledToFit()
-                        }
+                        
                     }
                     
                     .clipShape(RoundedRectangle(cornerRadius: 15))

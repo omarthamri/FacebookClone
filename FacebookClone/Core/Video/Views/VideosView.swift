@@ -10,18 +10,16 @@ import AVKit
 
 struct VideosView: View {
     @State private var player = AVPlayer()
+    @StateObject private var viewModel = VideoViewModel()
+    @State private var isInitialVideoPlayed = false
     var body: some View {
             GeometryReader { proxy in
                 NavigationView {
                     ScrollView {
                         VideoOptionsView()
-                        VideoCell(player: player)
-                    }
-                    .onAppear{
-                                                    playInitialVideoIfNecessary()
-                                            }
-                    .onDisappear{
-                        player.pause()
+                        ForEach(viewModel.videoPosts,id: \.self) { videoPost in
+                            VideoCell(videoPost: videoPost,viewModel: viewModel)
+                        }
                     }
                     .scrollIndicators(.hidden)
                     .toolbar{
@@ -44,13 +42,7 @@ struct VideosView: View {
             }
     }
     
-    private func playInitialVideoIfNecessary() {
-            let playerItem = AVPlayerItem(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
-            player.replaceCurrentItem(with: playerItem)
-        player.play()
-        }
+    
 }
 
-#Preview {
-    VideosView()
-}
+

@@ -10,9 +10,15 @@ import AVKit
 
 struct VideoCell: View {
     let facebookBlue = Color(red: 66/255, green: 103/255, blue: 178/255,opacity: 1)
-    let player: AVPlayer
-    init(player: AVPlayer) {
-        self.player = player
+    var player: AVPlayer = AVPlayer()
+    @StateObject private var viewModel: VideoViewModel
+    private var videoPost: Video
+    init(videoPost: Video,viewModel: VideoViewModel) {
+        self.videoPost = videoPost
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        if let url = URL(string: videoPost.videoUrl) {
+        self.player = AVPlayer(playerItem: AVPlayerItem(url: url))
+        }
     }
     var body: some View {
         VStack(alignment: .leading) {
@@ -42,18 +48,18 @@ struct VideoCell: View {
                     .foregroundStyle(Color(.darkGray))
             }
             .padding(.horizontal)
-            Text("Time to party with the best team ever :D")
+            Text(videoPost.videoDescription)
             .padding(.horizontal)
             CustomVideoPlayer(player: player)
                 .frame(height: 300)
                 .onTapGesture {
-                            switch player.timeControlStatus {
+                    switch player.timeControlStatus {
                             case .paused:
-                                player.play()
+                        player.play()
                             case .waitingToPlayAtSpecifiedRate:
                                 break
                             case .playing:
-                                player.pause()
+                        player.pause()
                             @unknown default:
                                 break
                             }
@@ -104,10 +110,27 @@ struct VideoCell: View {
             .foregroundStyle(facebookBlue)
             .font(.system(size: 14))
             .padding(.horizontal)
+            .onAppear{
+                    playInitialVideoIfNecessary()
+                    }
+            .onDisappear{
+                player.pause()
+            }
         }
     }
 }
 
-#Preview {
-    VideoCell(player: AVPlayer())
+
+
+extension VideoCell {
+    
+    private func playInitialVideoIfNecessary() {
+        guard let videoUrl = URL(string: videoPost.videoUrl) else { return }
+        let playerItem = AVPlayerItem(url: videoUrl)
+        player.replaceCurrentItem(with: playerItem)
+        if viewModel.videoPosts.firstIndex(of: videoPost) == 0 {
+            player.play()
+        }
+        }
+    
 }

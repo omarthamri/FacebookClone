@@ -39,6 +39,7 @@
 		48B224582B441CFC00D86450 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B224572B441CFC00D86450 /* CreatePostView.swift */; };
 		48B2245A2B44764C00D86450 /* ChoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B224592B44764C00D86450 /* ChoicesView.swift */; };
 		48B224602B44866E00D86450 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B2245F2B44866E00D86450 /* FriendsView.swift */; };
+		48C3E1AC2B502B38009AD0AB /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C3E1AB2B502B38009AD0AB /* Video.swift */; };
 		48CB99AD2B475968007BA541 /* AddEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CB99AC2B475968007BA541 /* AddEmailView.swift */; };
 		48CB99AF2B475F5F007BA541 /* AddPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CB99AE2B475F5F007BA541 /* AddPasswordView.swift */; };
 		48CB99B12B4765A5007BA541 /* AgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CB99B02B4765A5007BA541 /* AgreementView.swift */; };
@@ -128,6 +129,7 @@
 		48B224572B441CFC00D86450 /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
 		48B224592B44764C00D86450 /* ChoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoicesView.swift; sourceTree = "<group>"; };
 		48B2245F2B44866E00D86450 /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		48C3E1AB2B502B38009AD0AB /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		48CB99AC2B475968007BA541 /* AddEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmailView.swift; sourceTree = "<group>"; };
 		48CB99AE2B475F5F007BA541 /* AddPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPasswordView.swift; sourceTree = "<group>"; };
 		48CB99B02B4765A5007BA541 /* AgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementView.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				484838A92B4A18DA00CE4B49 /* User.swift */,
 				484838AB2B4A1BD700CE4B49 /* Post.swift */,
 				48E2B5022B4C0E9F002FEA16 /* Item.swift */,
+				48C3E1AB2B502B38009AD0AB /* Video.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -536,13 +539,13 @@
 		48E89FF62B46EF5700546190 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				48E89FF72B46EF9400546190 /* LoginView.swift */,
 				48E89FFB2B4711D200546190 /* AddNameView.swift */,
 				48E89FFD2B4726C500546190 /* AddAgeView.swift */,
 				48E89FFF2B472EC900546190 /* AddgenderView.swift */,
 				48CB99AC2B475968007BA541 /* AddEmailView.swift */,
 				48CB99AE2B475F5F007BA541 /* AddPasswordView.swift */,
 				48CB99B02B4765A5007BA541 /* AgreementView.swift */,
+				48E89FF72B46EF9400546190 /* LoginView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -750,6 +753,7 @@
 				484838AC2B4A1BD700CE4B49 /* Post.swift in Sources */,
 				48E2B51D2B4C4D4B002FEA16 /* UserService.swift in Sources */,
 				48F270802B44CAE400C34354 /* MenuView.swift in Sources */,
+				48C3E1AC2B502B38009AD0AB /* Video.swift in Sources */,
 				48E89FF82B46EF9400546190 /* LoginView.swift in Sources */,
 				4899B3C22B45BB2B0045BE41 /* ShortCutListView.swift in Sources */,
 				48B224542B4419D900D86450 /* whatsOnYourMindView.swift in Sources */,
