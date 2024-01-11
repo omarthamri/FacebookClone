@@ -12,11 +12,9 @@ struct PostView: View {
     let facebookBlue = Color(red: 66/255, green: 103/255, blue: 178/255,opacity: 1)
     private var viewModel: FeedViewModel
     private var index: Int
-    private var user: User
     init(viewModel: FeedViewModel,index: Int) {
         self.viewModel = viewModel
         self.index = index
-        self.user = viewModel.users.first(where: {$0.id == viewModel.posts[index].userId}) ?? viewModel.users[0]
     }
     var body: some View {
         VStack(alignment: .leading) {

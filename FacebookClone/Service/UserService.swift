@@ -59,6 +59,8 @@ class UserService {
     
     func reset() {
         self.currentUser = nil
+        self.friends = nil
+        self.friendsRequests = nil
     }
     
     static func fetchUser(withuid uid: String) async throws -> User {
