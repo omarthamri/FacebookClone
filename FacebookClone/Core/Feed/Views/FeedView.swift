@@ -30,6 +30,7 @@ struct FeedView: View {
                         .scrollIndicators(.hidden)
                     }
                     .refreshable {
+                        viewModel.posts = []
                         Task { try await viewModel.fetchPosts() }
                     }
                 }
